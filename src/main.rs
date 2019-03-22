@@ -1,3 +1,5 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+#[macro_use] extern crate rocket;
 extern crate num;
 use num::Complex;
 use std::str::FromStr;
@@ -89,7 +91,7 @@ fn write_image(filename: &str, pixels: &[u8], bounds:(usize, usize))
     encoder.encode(&pixels,
                    bounds.0 as u32,
                    bounds.1 as u32,
-        ColorType::Gray(8));
+        ColorType::Gray(8))?;
 
     Ok(())
 }
@@ -126,7 +128,7 @@ fn test_pixel_to_point() {
 
 use std::io::Write;
 extern crate crossbeam;
-fn main() {
+fn generate_picture() {
     let args: Vec<String> = std::env::args().collect();
 
     if args.len() != 5 {
@@ -171,4 +173,26 @@ fn main() {
 
 
     write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
+}
+
+
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
+
+// #[get("/file")]
+// fn file() -> io::<NamedFile> {
+//     NamedFile::open(Path::new("")).ok()
+// }
+
+mod routes;
+use crate::routes::{static_files, get};
+fn main() {
+    rocket::ignite()
+    .mount("/", routes![
+        static_files::file,
+        get::index
+    ])
+    .launch();
 }
