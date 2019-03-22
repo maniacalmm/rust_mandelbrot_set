@@ -8,7 +8,6 @@ fn main() {
     .mount("/", routes![
         static_files::file,
         get::index,
-        get::test_ajax
-    ])
+        get::create_img])
     .launch();
 }

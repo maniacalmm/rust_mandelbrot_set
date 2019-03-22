@@ -126,26 +126,41 @@ fn test_pixel_to_point() {
 
 use std::io::Write;
 extern crate crossbeam;
-fn generate_picture() {
-    let args: Vec<String> = std::env::args().collect();
+pub fn generate_picture(
+    upper_left_x: String,
+    upper_left_y: String,
+    lower_right_x: String,
+    lower_right_y: String,
+    w: String,
+    h: String)
+{
+//    let args: Vec<String> = std::env::args().collect();
+//
+//    if args.len() != 5 {
+//        writeln!(std::io::stderr(), "Usage: mandelbrot FILE PIXELS UPPERLEFT LOWERRIGHT").unwrap();
+//        writeln!(std::io::stderr(), "Example: {} mandel.png 1000x750 -1.20,0.035 -1,0.20", args[0]).unwrap();
+//        std::process::exit(1);
+//    }
+//
+//    let bounds = parse_pair(&args[2], 'x').expect("error parsing image dimensions");
+//    let upper_left = parse_complex(&args[3]).expect("error parsing upper left corner point");
+//    let lower_right = parse_complex(&args[4]).expect("error parsing lower right corner point");
+//
+    println!("at lease we are inside of generate_picture");
+    let upper_left = parse_complex(&format!("{},{}", upper_left_x, upper_left_y)).expect("upper_left error");
+    let lower_right = parse_complex(&format!("{},{}", lower_right_x, lower_right_y)).expect("lower_right error");
+    let bounds = parse_pair(&format!("{}x{}", w, h), 'x').expect("bounds error");
 
-    if args.len() != 5 {
-        writeln!(std::io::stderr(), "Usage: mandelbrot FILE PIXELS UPPERLEFT LOWERRIGHT").unwrap();
-        writeln!(std::io::stderr(), "Example: {} mandel.png 1000x750 -1.20,0.035 -1,0.20", args[0]).unwrap();
-        std::process::exit(1);
-    }
-
-    let bounds = parse_pair(&args[2], 'x').expect("error parsing image dimensions");
-    let upper_left = parse_complex(&args[3]).expect("error parsing upper left corner point");
-    let lower_right = parse_complex(&args[4]).expect("error parsing lower right corner point");
-
+    println!("{:?} {:?} {:?}", upper_left, lower_right, bounds);
     let mut pixels = vec![0; bounds.0 * bounds.1];
+
+    println!("{:?} {:?} {:?}", upper_left, lower_right, bounds);
 
     // consequential way
 //    render(&mut pixels, bounds, upper_left, lower_right);
 
     // parallel way
-    let threads = 8;
+    let threads = 4;
     let rows_per_band = bounds.1 / threads + 1;
 
     {
@@ -169,6 +184,5 @@ fn generate_picture() {
         });
     }
 
-
-    write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
+    write_image("static/mandel.png", &pixels, bounds).expect("error writing PNG file");
 }
