@@ -132,7 +132,9 @@ pub fn generate_picture(
     lower_right_x: String,
     lower_right_y: String,
     w: String,
-    h: String)
+    h: String,
+    idx: String
+    )
 {
 //    let args: Vec<String> = std::env::args().collect();
 //
@@ -160,7 +162,7 @@ pub fn generate_picture(
 //    render(&mut pixels, bounds, upper_left, lower_right);
 
     // parallel way
-    let threads = 4;
+    let threads = 8;
     let rows_per_band = bounds.1 / threads + 1;
 
     {
@@ -184,5 +186,5 @@ pub fn generate_picture(
         });
     }
 
-    write_image("static/mandel.png", &pixels, bounds).expect("error writing PNG file");
+    write_image(&format!("static/mandel{}.png", idx), &pixels, bounds).expect("error writing PNG file");
 }
