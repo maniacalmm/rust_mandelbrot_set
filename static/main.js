@@ -17,13 +17,16 @@ function get_boundY() {
 
 
 function getImageSize() {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    let boundy = get_boundY();
-    let boundx = get_boundX();
 
-    if (height / boundy * boundx > width) return [width, Math.floor(width / boundx * boundy)]
-    return [Math.floor(height / boundy * boundx), height]
+    console.log(top_upper_left_x, top_upper_left_y)
+    console.log(top_lower_right_x, top_lower_right_y)
+
+    return [width, height]
+    // let boundy = get_boundY();
+    // let boundx = get_boundX();
+
+    // if (height / boundy * boundx > width) return [width, Math.floor(width / boundx * boundy)]
+    // return [Math.floor(height / boundy * boundx), height]
 }
 
 //TODO: we tap/click on the screen, then zoom in, but what about zoom out
@@ -34,7 +37,16 @@ function pixel_to_point() {
 
 function init() {
 
-    let picture_size = getImageSize();
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    top_upper_left_x = -1 * width / 300 * 2 / 3
+    top_upper_left_y = height / 300 * 0.5
+
+    top_lower_right_x = width / 300 / 3
+    top_lower_right_y = -1 * top_upper_left_y
+
+    let picture_size = [width, height]
     console.log("get_resize: ", picture_size)
 
     // let data = {
@@ -119,7 +131,7 @@ function setNewImageProperties(imgTop, imgLeft, imgHeight, imgWidth, clickX, cli
     console.log("lx: ", top_lower_right_x, " ly: ", top_lower_right_y)
 
     // sending the request to load new image
-    let picture_size = getImageSize();
+    let picture_size = [window.innerWidth, window.innerHeight]
 
     request_to_create_image(
         picture_size[0],
