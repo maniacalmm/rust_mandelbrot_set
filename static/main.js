@@ -15,20 +15,6 @@ function get_boundY() {
     return top_upper_left_y - top_lower_right_y;
 }
 
-
-function getImageSize() {
-
-    console.log(top_upper_left_x, top_upper_left_y)
-    console.log(top_lower_right_x, top_lower_right_y)
-
-    return [width, height]
-    // let boundy = get_boundY();
-    // let boundx = get_boundX();
-
-    // if (height / boundy * boundx > width) return [width, Math.floor(width / boundx * boundy)]
-    // return [Math.floor(height / boundy * boundx), height]
-}
-
 //TODO: we tap/click on the screen, then zoom in, but what about zoom out
 //TODO: add + and - bottom?
 function pixel_to_point() {
@@ -87,7 +73,7 @@ function request_to_create_image(w, h, ux, uy, lx, ly) {
         console.log(data)
 
         $("#pic").empty()
-        $('#pic').prepend(`<img id="p" src="static/mandel${idx}.png"/>`)
+        $('#pic').prepend(`<img id="p" style="border:0;margin:0" src="static/mandel${idx}.png"/>`)
     })
 }
 
