@@ -73,7 +73,7 @@ function request_to_create_image(w, h, ux, uy, lx, ly) {
         console.log(data)
 
         $("#pic").empty()
-        $('#pic').prepend(`<img id="p" style="border:0;margin:0" src="static/mandel${idx}.png"/>`)
+        $('#pic').prepend(`<img id="p" style="border:0;margin:0" src="static/pics/mandel${idx}.png"/>`)
     })
 }
 
