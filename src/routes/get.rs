@@ -32,3 +32,17 @@ pub fn create_img(w: Option<&RawStr>,
 
     format!("picture size: {}x{}", w.unwrap(), h.unwrap(), )
 }
+
+
+#[options("/mandel?<ux>&<uy>&<lx>&<ly>&<w>&<h>&<idx>")]
+pub fn create_img_options(w: Option<&RawStr>,
+              h: Option<&RawStr>,
+              ux: Option<&RawStr>,
+              uy: Option<&RawStr>,
+              lx: Option<&RawStr>,
+              ly: Option<&RawStr>,
+              idx: Option<&RawStr>
+              ) -> String {
+
+    format!("picture size: {}x{}", w.unwrap(), h.unwrap(), )
+}
