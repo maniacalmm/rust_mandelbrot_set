@@ -186,5 +186,5 @@ pub fn generate_picture(
         });
     }
 
-    write_image(&format!("static/pics/mandel{}.png", idx), &pixels, bounds).expect("error writing PNG file");
+    write_image(&format!("static/mandel{}.png", idx), &pixels, bounds).expect("error writing PNG file");
 }
