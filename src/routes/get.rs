@@ -10,14 +10,13 @@ pub fn index() -> io::Result<NamedFile> {
     NamedFile::open("static/index.html")
 }
 
-#[get("/mandel?<ux>&<uy>&<lx>&<ly>&<w>&<h>&<idx>")]
+#[get("/mandel?<ux>&<uy>&<lx>&<ly>&<w>&<h>")]
 pub fn create_img(w: Option<&RawStr>,
               h: Option<&RawStr>,
               ux: Option<&RawStr>,
               uy: Option<&RawStr>,
               lx: Option<&RawStr>,
-              ly: Option<&RawStr>,
-              idx: Option<&RawStr>
+              ly: Option<&RawStr>
               ) -> String {
 
     mandel::generate_picture(
@@ -27,10 +26,7 @@ pub fn create_img(w: Option<&RawStr>,
         ly.unwrap().to_string(),
         w.unwrap().to_string(),
         h.unwrap().to_string(),
-        idx.unwrap().to_string()
-    );
-
-    format!("picture size: {}x{}", w.unwrap(), h.unwrap(), )
+    )
 }
 
 

@@ -63,17 +63,15 @@ function init() {
 }
 
 function request_to_create_image(w, h, ux, uy, lx, ly) {
-    idx += 1
     let data = {
-        w, h, ux, uy, lx, ly, idx
+        w, h, ux, uy, lx, ly
     };
 
     $.get("/mandel", data ,function(data) {
         console.log("succeed");
-        console.log(data)
-
         $("#pic").empty()
-        $('#pic').prepend(`<img id="p" style="border:0;margin:0" src="static/mandel${idx}.png"/>`)
+//        $('#pic').prepend(`<img id="p" style="border:0;margin:0" src="static/mandel.png"/>`)
+        $("#pic").prepend(`<img id="p" style="border:0;margin:0" src="data:image/png;base64,${data}"/>`)
     })
 }
 
@@ -101,11 +99,11 @@ function setNewImageProperties(imgTop, imgLeft, imgHeight, imgWidth, clickX, cli
     console.log("above: ", above)
     console.log("below: ", below)
 
-    let left_range = left / imgWidth  * 0.4 * get_boundX();
-    let right_range = right / imgWidth * 0.4 * get_boundX();
+    let left_range = left / imgWidth  * 0.5 * get_boundX();
+    let right_range = right / imgWidth * 0.5 * get_boundX();
 
-    let above_range = above / imgHeight * 0.4 * get_boundY();
-    let below_range = below / imgHeight * 0.4 * get_boundY();
+    let above_range = above / imgHeight * 0.5 * get_boundY();
+    let below_range = below / imgHeight * 0.5 * get_boundY();
 
     top_upper_left_x += left_range;
     top_upper_left_y  -= above_range;
@@ -130,6 +128,7 @@ function setNewImageProperties(imgTop, imgLeft, imgHeight, imgWidth, clickX, cli
 }
 
 $(window).dblclick(function(e) {
+    $("#hint").empty()
     let clickX = e.clientX
     let clickY = e.clientY
     let imgTop = $("#p").offset().top

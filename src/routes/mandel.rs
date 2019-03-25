@@ -79,19 +79,32 @@ fn render(pixels: &mut [u8],
 extern crate image;
 use image::ColorType;
 use image::png::PNGEncoder;
+use std::io;
+use std::io::prelude::*;
 use std::fs::File;
 
-fn write_image(filename: &str, pixels: &[u8], bounds:(usize, usize))
-    -> Result<(), std::io::Error>
+extern crate rustc_serialize;
+use rustc_serialize::base64::{ToBase64, STANDARD};
+
+fn write_image(pixels: &[u8], bounds:(usize, usize))
+    -> Result<String, std::io::Error>
 {
-    let output = File::create(filename)?;
-    let encoder = PNGEncoder::new(output);
-    encoder.encode(&pixels,
+//    let output = File::create(filename)?;
+//    let encoder = PNGEncoder::new(output);
+//    encoder.encode(&pixels,
+//                   bounds.0 as u32,
+//                   bounds.1 as u32,
+//        ColorType::Gray(8))?;
+
+    let mut vec_output = Vec::new();
+    let vec_encoder = PNGEncoder::new(&mut vec_output);
+    vec_encoder.encode(&pixels,
                    bounds.0 as u32,
                    bounds.1 as u32,
-        ColorType::Gray(8))?;
+                   ColorType::Gray(8))?;
 
-    Ok(())
+    let base64_string = vec_output.to_base64(STANDARD);
+    Ok(base64_string)
 }
 
 #[test]
@@ -133,8 +146,7 @@ pub fn generate_picture(
     lower_right_y: String,
     w: String,
     h: String,
-    idx: String
-    )
+    ) -> String
 {
 //    let args: Vec<String> = std::env::args().collect();
 //
@@ -148,15 +160,10 @@ pub fn generate_picture(
 //    let upper_left = parse_complex(&args[3]).expect("error parsing upper left corner point");
 //    let lower_right = parse_complex(&args[4]).expect("error parsing lower right corner point");
 //
-    println!("at lease we are inside of generate_picture");
     let upper_left = parse_complex(&format!("{},{}", upper_left_x, upper_left_y)).expect("upper_left error");
     let lower_right = parse_complex(&format!("{},{}", lower_right_x, lower_right_y)).expect("lower_right error");
     let bounds = parse_pair(&format!("{}x{}", w, h), 'x').expect("bounds error");
-
-    println!("{:?} {:?} {:?}", upper_left, lower_right, bounds);
     let mut pixels = vec![0; bounds.0 * bounds.1];
-
-    println!("{:?} {:?} {:?}", upper_left, lower_right, bounds);
 
     // consequential way
 //    render(&mut pixels, bounds, upper_left, lower_right);
@@ -186,5 +193,6 @@ pub fn generate_picture(
         });
     }
 
-    write_image(&format!("static/mandel{}.png", idx), &pixels, bounds).expect("error writing PNG file");
+//    write_image(&format!("static/mandel{}.png", idx), &pixels, bounds).expect("error writing PNG file");
+    write_image(&pixels, bounds).expect("error generating PNG image")
 }
