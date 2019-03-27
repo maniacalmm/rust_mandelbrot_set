@@ -169,7 +169,7 @@ pub fn generate_picture(
 //    render(&mut pixels, bounds, upper_left, lower_right);
 
     // parallel way
-    let threads = 8;
+    let threads = 4;
     let rows_per_band = bounds.1 / threads + 1;
 
     {
