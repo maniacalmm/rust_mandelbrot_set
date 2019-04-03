@@ -8,8 +8,7 @@ fn main() {
     .mount("/", routes![
         static_files::file,
         get::index,
-        get::create_img,
-        get::create_img_options
+        get::create_img
         ])
     .launch();
 }
